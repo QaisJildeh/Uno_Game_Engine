@@ -46,7 +46,7 @@ public class Player {
     public void printPlayerHand(){
         System.out.println(getPlayerName() + "'s" + " hand:");
         for(int i = 0; i < hand.size(); i++){
-            System.out.print("[" + i + "] ");
+            System.out.print("[" + (i+1) + "] ");
             hand.get(i).getCardDetails();
         }
     }

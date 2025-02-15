@@ -233,11 +233,10 @@ public abstract class Game {
         Card chosenCard;
         while(!isGameOver()){
             Player currentPlayer = players.get(getCurrentPlayerIndex());
-            System.out.println("\n<========= Turn: " + currentPlayer.getPlayerName() + " =========>\n");
+            System.out.println("\n<=============== Turn: " + currentPlayer.getPlayerName() + " ===============>\n");
             System.out.print("Discard Pile: ");
             discardPile.getLastThrownCard().getCardDetails();
 
-            System.out.println(getPlayers().get(getCurrentPlayerIndex()).getPlayerName());
             getPlayers().get(getCurrentPlayerIndex()).printPlayerHand();
 
             drawFlag = false;
@@ -252,21 +251,19 @@ public abstract class Game {
                 }
                 cardSelection = scanner.nextInt();
 
-                if(cardSelection == -2) break;
-                if(cardSelection == -1){
+                if(cardSelection == -2 && drawFlag) break;
+                if(cardSelection == -1 && !drawFlag){
+                    drawFlag = true;
                     drawCards(getCurrentPlayer(), 1);
+                    getPlayers().get(getCurrentPlayerIndex()).printPlayerHand();
                     continue;
                 }
 
-                chosenCard = getCurrentPlayer().chooseCard(cardSelection);
+                chosenCard = getCurrentPlayer().chooseCard(--cardSelection);
                 if(chosenCard == null || !isValidPlay(chosenCard)){
                     System.out.println("Invalid card selection. Try again.");
                     chosenCard = null;
                 }
-            }
-
-            if(drawFlag){
-                getPlayers().get(getCurrentPlayerIndex()).printPlayerHand();
             }
 
             if(chosenCard != null){
