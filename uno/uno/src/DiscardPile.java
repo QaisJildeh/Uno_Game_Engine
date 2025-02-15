@@ -1,9 +1,10 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class DiscardPile {
     private static DiscardPile singletonDiscardPile;
-    private static List<Card> discardPile;
+    private List<Card> discardPile;
 
     private DiscardPile(){
         discardPile = new ArrayList<Card>();
@@ -42,5 +43,34 @@ public class DiscardPile {
         discardPile.clear();
         discardPile.add(newDeck.removeLast());
         return newDeck;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(discardPile);
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        if(obj == null){
+            return false;
+        }
+        else if(!(obj instanceof DiscardPile)){
+            return false;
+        }
+
+        DiscardPile pile = (DiscardPile) obj;
+        return this.discardPile.equals(pile);
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n#Discard Pile Cards:");
+        for(Card card : discardPile){
+            sb.append(card.toString());
+        }
+
+        return sb.toString();
     }
 }

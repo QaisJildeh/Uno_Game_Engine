@@ -1,14 +1,16 @@
+import javax.xml.transform.Source;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class Deck {
     private static Deck singletonDeck;
-    private List<Card> deck;
+    private List<Card> unoDeck;
     private final String[] COLORS = {"Blue", "Yellow", "Red", "Green"};
 
     private Deck(){
-        deck = new ArrayList<Card>();
+        unoDeck = new ArrayList<Card>();
         initializeDeck();
         shuffleDeck();
     }
@@ -21,19 +23,19 @@ public class Deck {
     }
 
     public List<Card> getDeckCards(){
-        return deck;
+        return unoDeck;
     }
 
     public boolean isEmpty(){
-        return deck.isEmpty();
+        return unoDeck.isEmpty();
     }
 
     private void initializeNumberedCards(){
         for(String color : COLORS){
-            deck.add(new NumberedCard(color, 0));
+            unoDeck.add(new NumberedCard(color, 0));
             for(int i = 1; i < 10; i++){
-                deck.add(new NumberedCard(color, i));
-                deck.add(new NumberedCard(color, i));
+                unoDeck.add(new NumberedCard(color, i));
+                unoDeck.add(new NumberedCard(color, i));
             }
         }
     }
@@ -41,8 +43,8 @@ public class Deck {
     private void initializeActionCards(){
         for(String color : COLORS){
             for(int i = -1; i > -4; i--){
-                deck.add(new ActionCard(color, i));
-                deck.add(new ActionCard(color, i));
+                unoDeck.add(new ActionCard(color, i));
+                unoDeck.add(new ActionCard(color, i));
             }
         }
     }
@@ -50,7 +52,7 @@ public class Deck {
     private void initializeWildCards(){
         for(int i = -4; i > -6; i--){
             for(int j = 0; j < 4; j++){
-                deck.add(new WildCard("Colorless", i));
+                unoDeck.add(new WildCard("Colorless", i));
             }
         }
     }
@@ -62,12 +64,12 @@ public class Deck {
     }
 
     public void shuffleDeck(){
-        Collections.shuffle(deck);
+        Collections.shuffle(unoDeck);
     }
 
     public void refillDeck(List<Card> cards){
         if(isEmpty()){
-            deck.addAll(cards);
+            unoDeck.addAll(cards);
             shuffleDeck();
             System.out.println("Deck refilled and shuffled!");
         }
@@ -81,7 +83,36 @@ public class Deck {
             return null;
         }
         else{
-            return deck.removeLast();
+            return unoDeck.removeLast();
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(unoDeck);
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        if(obj == null){
+            return false;
+        }
+        else if(!(obj instanceof Deck)){
+            return false;
+        }
+
+        Deck deck = (Deck) obj;
+        return this.unoDeck.equals(deck);
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("\n#UNO Deck:");
+        for(Card card : unoDeck){
+            stringBuilder.append(card.toString());
+        }
+
+        return stringBuilder.toString();
     }
 }

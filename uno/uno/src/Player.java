@@ -1,8 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Player {
-    private String playerName;
+    private final String playerName;
     private List<Card> hand;
 
     public Player(String playerName){
@@ -12,6 +13,10 @@ public class Player {
 
     public String getPlayerName(){
         return playerName;
+    }
+
+    public List<Card> getPlayerHand(){
+        return hand;
     }
 
     public void drawCard(Card newCard){
@@ -48,5 +53,34 @@ public class Player {
 
     public boolean isHandEmpty(){
         return hand.isEmpty();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(playerName, hand);
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        if(obj == null){
+            return false;
+        }
+        else if(!(obj instanceof Player)){
+            return false;
+        }
+
+        Player player = (Player) obj;
+        return this.playerName.equals(player.playerName) && this.hand.equals(player.hand);
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("\nPlayer Name: " + getPlayerName());
+        for(Card card : hand){
+            stringBuilder.append(card.toString());
+        }
+
+        return stringBuilder.toString();
     }
 }
